@@ -1,0 +1,8 @@
+[package]
+name = "libsrt-sys"
+version = "1.0.0"
+authors = ["Shumpei Urabe <urabe@hack.ne.jp>"]
+build = "build.rs"
+
+[build-dependencies]
+bindgen = ">=0.32"

@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: rust:1.24.1
+    environment:
+      - CFLAGS: -O3 -g
+      - DEBIAN_FRONTEND: noninteractive
+    steps:
+      - run: apt update -qq
+      - run: apt install software-properties-common tclsh cmake libssl-dev build-essential ca-certificates curl pkg-config clang git openssh-client -y --no-install-recommends
+      - checkout
+      - run:
+            name: Install libsrt
+            command: |
+              mkdir -p target/src/libsrt
+              cd target/src/libsrt
+              curl -Lf https://github.com/Haivision/srt/archive/v1.3.0.tar.gz | tar zxf - --strip-components 1
+              ./configure
+              make
+              make install
+      - run: cargo build --verbose
+      - run: cargo test --verbose
